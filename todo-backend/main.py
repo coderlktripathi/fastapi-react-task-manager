@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from apps.todo.routers import router as todo_router
+
 app = FastAPI()
 
 
 # database connection
-DB_URL = 'mongodb://localhost:27017'
-DB_NAME = 'task-manager'
+DB_URL = "mongodb://localhost:27017"
+DB_NAME = "task-manager"
+
 
 @app.on_event("startup")
 async def start_db_client():
@@ -19,8 +22,4 @@ async def shutdown_db_client():
     app.mongodb_client.close()
 
 
-@app.get("/")
-async def main():
-    import pdb; pdb.set_trace()
-    return {"Hello": "World"}
-
+app.include_router(todo_router, tags=["tasks"], prefix="/task")
