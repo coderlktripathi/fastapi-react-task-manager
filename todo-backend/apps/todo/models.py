@@ -12,8 +12,8 @@ class TaskModel(BaseModel):
         allow_population_by_field_name = True
         schema_extra = {
             "example": {
-                "id": "00010203-0405-0607-0809-0a0b0c0d0e0f",
-                "title": "My task title",
-                "description": "My task description",
+                "_id": "00010203-0405-0607-0809-0a0b0c0d0e0f",
+                "title": "Task title",
+                "description": "Task description",
             }
         }
