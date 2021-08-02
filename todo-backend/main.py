@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from apps.todo.routers import router as todo_router
@@ -19,9 +20,22 @@ async def start_db_client():
 async def shutdown_db_client():
     app.mongodb_client.close()
 
+# include routes from different apps
+app.include_router(todo_router, tags=["tasks"], prefix="/api/task")
 
-app.include_router(todo_router, tags=["tasks"], prefix="/task")
 
+# Handle CORS
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # run the application
 if __name__ == "__main__":
